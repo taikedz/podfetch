@@ -20,7 +20,7 @@ Mark all episodes, or the specified episodes, in the database as being "read" or
 
 	podfecth mark {read | unread} DIR [EPISODEID ...]
 
-List read, unread or all episodes; or list media formats supported by the podcast engine
+List read, unread or all episodes; or list media formats supported by the specific podcast module
 
 	podfetch list {read | unread | all | formats} DIR
 
@@ -30,7 +30,7 @@ List read, unread or all episodes; or list media formats supported by the podcas
 
 Any podcast should have the following properties:
 
-* URL - where the main page for the podcast can be found, from which the engine derives a list of episodes
+* URL - where the main page for the podcast can be found, from which the podcast-specific module derives a list of episodes
 * Podcast Name : a string giving the name of the podcast
 * Episode Identifier : a short episode identifier, ususally numerical, but sometimes a string of season number and episode number, or just a date.
 * Publishing date : the date the episode was published - typically `YYYY-MM-DD` , though sometimes with a time portion in which case `YYYY-MM-DD-hh:mm:ss` would be usual.
@@ -52,7 +52,7 @@ By default, an episode file name pattern would be generated using the podcast sh
 
 ## Media priority preference
 
-Podcasts publish in various media formats - MP3, OGG, Theora, MOV, YouTube ... Use the `podfetch list formats DIR` command to list the modes for the supported podcast engine
+Podcasts publish in various media formats - MP3, OGG, Theora, MOV, YouTube ... Use the `podfetch list formats DIR` command to list the modes for the supported podcast-specific module
 
 ## Podcast Engine
 
