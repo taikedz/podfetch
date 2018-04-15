@@ -28,13 +28,17 @@ List read, unread or all episodes; or list media formats supported by the podcas
 
 ### Properties
 
-Any podcast is assumed to have the following properties:
+Any podcast should have the following properties:
 
+* URL - where the main page for the podcast can be found, from which the engine derives a list of episodes
 * Podcast Name : a string giving the name of the podcast
-* Podcast Shortname : a short name for the podcast
 * Episode Identifier : a short episode identifier, ususally numerical, but sometimes a string of season number and episode number, or just a date.
-* Episode name : optional title of the episode
 * Publishing date : the date the episode was published - typically `YYYY-MM-DD` , though sometimes with a time portion in which case `YYYY-MM-DD-hh:mm:ss` would be usual.
+
+Any podcast is assumed to be able to provide the following additional properties:
+
+* Podcast Shortname : a short name for the podcast
+* Episode name : optional title of the episode
 
 ### Pattern
 
