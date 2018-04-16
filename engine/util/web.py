@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 """ Web-related utilities and classes.
 """
 

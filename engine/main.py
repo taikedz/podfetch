@@ -3,14 +3,24 @@
 import sys
 import feedback
 
+import init
+import prefs
+import download
+import manage
+import listing
+
 def main(args):
+
+    if len(args) < 1:
+        feedback.fail("No arguments supplied")
+
     action = args[0]
 
-    if action == "pref":
-        prefs.processAll(args[1:])
-
-    elif action == "init":
+    if action == "init":
         init.new(args[1:])
+
+    elif action == "pref":
+        prefs.processAll(args[1:])
 
     elif action == "download":
         download.fetchAll(args[1:])
@@ -25,4 +35,4 @@ def main(args):
         feedback.fail("Not a recognized command")
 
 if __name__ == '__main__':
-    return main(sys.argv[1:])
+    main(sys.argv[1:])
