@@ -1,6 +1,6 @@
 # PodFetch : Bulk Download From Feeds and Sites
 
-An extensible tool for downloading podcasts' media artifacts.
+An extensible tool for downloading podcasts' media artifacts - or any part you're interested in.
 
 ## Commands
 
@@ -10,11 +10,11 @@ Initialize a new podcast configuration in the local directory
 
 Set preferences: `MEDIAPREF` determines what the preferred format should be where multiple are available ; `NAMEPREF` specifies the naming pattern (see Naming Patterns below); `SHORTNAME` is the short name of the podcast for quick reference.
 
-	podfetch pref DIR [-m MEDIAPREF] [-n NAMEPREF] [-s SHORTNAME]
+	podfetch pref DIR [-m MEDIAPREF] [-n NAMEPREF] [-s SHORTNAME] [-t {true|false}]
 
-Download all "unread" items in the podcast directory, or the specified episodes; as each is succesfully downloaded, mark the item as "read". Changes to the preferences are for the instance only, and do not affect the defaults set with `pref`
+Download all "unread" items in the podcast directory, or the specified episodes; as each is succesfully downloaded, mark the item as "read". Preferences can be adjusted by specifying them directly, with the same format as for the `pref` command. Changes to the preferences are for the imediate run only, and do not affect the defaults set with `pref`
 
-	podfetch download DIR [-m MEDIAPREF] [-n NAMEPREF] [-s SHORTNAME] [EPISODEID ...]
+	podfetch download DIR [PREFS ...] [EPISODEID ...]
 
 Mark all episodes, or the specified episodes, in the database as being "read" or "unread".
 
@@ -50,9 +50,14 @@ By default, an episode file name pattern would be generated using the podcast sh
 * `$e` - the episode full name
 * `$d` - the episode date
 
+For example, to generate a file name pattern using the podcast full name, followed by the word `episode` and the identifier, specify a mediaspec like so
+
+    podfetch pref -m '$e episode $i'
+
+
 ## Media priority preference
 
-Podcasts publish in various media formats - MP3, OGG, Theora, MOV, YouTube ... Use the `podfetch list formats DIR` command to list the modes for the supported podcast-specific module
+Podcasts publish in various media formats - MP3, OGG, Theora, MOV, YouTube ... Use the `podfetch list formats DIR` command to list the modes for the supported podcast-specific module.
 
 ## Podcast Engine
 
