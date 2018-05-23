@@ -29,3 +29,9 @@ def naturalSort(array, keypattern='.*?([0-9]+)', group=1):
 
 
     array.sort(key=naturalSortKey)
+
+def defaultTo(value, default_value):
+    if value != None and value != "":
+        return value
+
+    return default_value

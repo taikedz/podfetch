@@ -4,14 +4,24 @@ import sys
 import feedback
 import testing
 
+import init
+import prefs
+import download
+import manage
+import listing
+
 def main(args):
+
+    if len(args) < 1:
+        feedback.fail("No arguments supplied")
+
     action = args[0]
 
-    if action == "pref":
-        prefs.processAll(args[1:])
-
-    elif action == "init":
+    if action == "init":
         init.new(args[1:])
+
+    elif action == "pref":
+        prefs.processAll(args[1:])
 
     elif action == "download":
         download.fetchAll(args[1:])
