@@ -2,6 +2,7 @@
 
 import sys
 import feedback
+import testing
 
 def main(args):
     action = args[0]
@@ -21,8 +22,11 @@ def main(args):
     elif action == "list":
         listing.listInfoFor(args[1:])
 
+    elif action == "test":
+        testing.testModule(args[1:])
+
     else:
         feedback.fail("Not a recognized command")
 
 if __name__ == '__main__':
-    return main(sys.argv[1:])
+    main(sys.argv[1:])

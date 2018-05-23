@@ -1,4 +1,5 @@
 scratch/
+engine/modules
 *.swp
 __pycache__/
 *.pyc

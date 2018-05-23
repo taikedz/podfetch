@@ -6,13 +6,13 @@
 import urllib.request
 import urllib.error
 from lxml.html import parse as parseHTML
+from urllib.parse import urljoin
 import filesys
 import io
 import re
 import os
 import time
 import gzip
-import ComicEngine
 import feedback
 
 useragent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
@@ -20,7 +20,9 @@ useragent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (
 class WebResource:
     """ A WebResource is identified by its URL
     """
-    def __init__(self, url):
+    def __init__(self, url, path=None):
+        if path != None:
+            url = urljoin(url, path)
         self.url = url
         self.domain = getUrlComponents(url, 2)
         self.pagedata = None
@@ -68,7 +70,7 @@ class WebResource:
                         feedback.debug("Succesfully downloaded %s"%self.url)
                         return
                     else:
-                        raise ComicEngine.ComicError("No data obtained!")
+                        raise DownloadError("No data obtained!")
                 except ConnectionResetError as e:
                     if retries > 0:
                         print("Peer reset connection - retrying ...")
@@ -80,7 +82,7 @@ class WebResource:
 
                 except urllib.error.HTTPError as e:
                     if httpCodeClass(e.code) == 500 and retries > 0:
-                        feedback.warn("# HTTP %i error - retrying ..."%e.code)
+                        feedback.warn("# HTTP %i error - retrying %i times ..."%(e.code, retries))
                         retries -= 1
                         time.sleep(2)
                         continue
@@ -132,7 +134,7 @@ class WebResource:
         """ Get source data as a series of lines. Lines do not include line terminator sequence.
         """
         sourcedata = self.getSource()
-        sourcedata = re.split("(\\r|\\n|\\r\\n)", sourcedata)
+        sourcedata = re.split("(\\r\\n|\\r|\\n)", sourcedata)
 
         if matching:
             return self.filter(souredata, matching)
@@ -163,8 +165,8 @@ def mapExtension(content_type):
     if content_type in extensions.keys():
         return extensions[content_type]
 
-def getUrlComponents(comic_url, group=0):
-    """ Extract the copmonents of a URL
+def getUrlComponents(web_url, group=0):
+    """ Extract the components of a URL
 
     If group == 0 , returns a tuple of (scheme, domain, path)
 
@@ -173,16 +175,16 @@ def getUrlComponents(comic_url, group=0):
     2 - domain
     3 - path
     """
-    m = re.match("^([a-z0-9]+)://([a-zA-Z0-9.-]+)(.*?)$", comic_url)
+    m = re.match("^([a-z0-9]+)://([a-zA-Z0-9.-]+)(.*?)$", web_url)
 
     if m:
         if group == 0:
             return m.group(1), m.group(2), m.group(3)
         elif group > 3:
-            raise ComicEngine.ComicError("No such group %i"%group)
+            raise UrlError("No such group %i"%group)
         return m.group(group)
 
-    raise ValueError("Not a valid url: %s" % comic_url)
+    raise ValueError("Not a valid url: %s" % web_url)
 
 def httpCodeClass(num):
     """ Given a HTTP code, return the denomination
@@ -192,6 +194,13 @@ def httpCodeClass(num):
     return num - x
 
 class DownloadError(Exception):
+
+    def __init__(self, message, url, code=0):
+        Exception.__init__(self, message)
+        self.code = code
+        self.url = url
+
+class UrlError(Exception):
 
     def __init__(self, message, url, code=0):
         Exception.__init__(self, message)
